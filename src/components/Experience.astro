@@ -1,0 +1,212 @@
+---
+import { experience, education } from '../data/portfolio';
+---
+
+<section class="section" id="experience" aria-labelledby="experience-title">
+  <div class="wrap">
+    <p class="eyebrow" data-reveal>03 · Experience</p>
+    <h2 class="section-title" id="experience-title" data-reveal>Six years on one product, with a growing remit.</h2>
+
+    <div class="layout">
+      <article class="job">
+        <header class="job-head" data-reveal>
+          <p class="period">{experience.period}</p>
+          <h3>{experience.company}</h3>
+          <p class="job-title">{experience.title}</p>
+          <p class="context">{experience.context}</p>
+        </header>
+
+        <ol class="phases">
+          {
+            experience.phases.map((phase) => (
+              <li class="phase" data-reveal>
+                <p class="phase-label">{phase.label}</p>
+                <h4>{phase.heading}</h4>
+                <ul>
+                  {phase.points.map((point) => (
+                    <li>{point}</li>
+                  ))}
+                </ul>
+              </li>
+            ))
+          }
+        </ol>
+      </article>
+
+      <aside class="education" aria-labelledby="education-title" data-reveal>
+        <h3 id="education-title">Education</h3>
+        <ul>
+          {
+            education.map((item) => (
+              <li>
+                <p class="period">{item.period}</p>
+                <p class="degree">{item.degree}</p>
+                <p class="school">{item.school}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 19rem);
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: start;
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .period,
+  .phase-label {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+
+  .job-head {
+    padding-bottom: 1.75rem;
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .job-head h3 {
+    margin-top: 0.6rem;
+    font-family: var(--font-display);
+    font-weight: 440;
+    font-size: clamp(1.7rem, 3.4vw, 2.3rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .job-title {
+    margin-top: 0.4rem;
+    font-weight: 550;
+  }
+
+  .context {
+    margin-top: 0.5rem;
+    max-width: 56ch;
+    color: var(--muted);
+  }
+
+  .phases {
+    position: relative;
+    display: grid;
+    gap: 2.25rem;
+    margin-top: 2.25rem;
+    padding-left: 1.75rem;
+  }
+
+  .phases::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 0.5rem;
+    bottom: 0.25rem;
+    width: 1px;
+    background: var(--line);
+  }
+
+  .phase {
+    position: relative;
+  }
+
+  .phase::before {
+    content: '';
+    position: absolute;
+    left: -1.75rem;
+    top: 0.35rem;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 2px solid var(--green);
+  }
+
+  .phase:last-child::before {
+    background: var(--green);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--android) 35%, transparent);
+  }
+
+  .phase h4 {
+    margin-top: 0.35rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .phase ul {
+    display: grid;
+    gap: 0.55rem;
+    margin-top: 0.8rem;
+    max-width: 62ch;
+  }
+
+  .phase li li,
+  .phase ul li {
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: 0.98rem;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+
+  .phase ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.68em;
+    width: 0.45rem;
+    height: 1px;
+    background: var(--green);
+  }
+
+  .education {
+    padding: 1.5rem 1.5rem 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--card);
+  }
+
+  .education h3 {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 460;
+  }
+
+  .education ul {
+    margin-top: 0.5rem;
+  }
+
+  .education li {
+    padding: 1rem 0;
+  }
+
+  .education li + li {
+    border-top: 1px solid var(--line);
+  }
+
+  .degree {
+    margin-top: 0.35rem;
+    font-weight: 550;
+    line-height: 1.35;
+  }
+
+  .school {
+    margin-top: 0.2rem;
+    font-size: 0.92rem;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+
+  @media (max-width: 900px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

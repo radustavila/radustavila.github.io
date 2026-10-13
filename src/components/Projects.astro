@@ -1,0 +1,555 @@
+---
+import Icon from './Icon.astro';
+import ProjectVisual from './ProjectVisual.astro';
+import { projects, libraries } from '../data/portfolio';
+---
+
+<section class="section work on-dark" id="work" aria-labelledby="work-title">
+  <div class="wrap">
+    <p class="eyebrow" data-reveal>02 · Selected work</p>
+    <h2 class="section-title" id="work-title" data-reveal>Products I’ve built and kept running.</h2>
+    <p class="section-lead" data-reveal>
+      One large production app I lead professionally, one product I run on my own, and a few projects I built to go
+      deeper on specific parts of the platform.
+    </p>
+
+    <div class="projects">
+      {
+        projects.map((project, index) => (
+          <article class:list={['project', { flip: index % 2 === 1 }]} id={project.id} aria-labelledby={`${project.id}-title`}>
+            <div class="project-visual" data-reveal>
+              <ProjectVisual variant={project.visual} />
+            </div>
+
+            <div class="project-body">
+              <p class="kicker" data-reveal>
+                <span class="index">{String(index + 1).padStart(2, '0')}</span>
+                {project.kicker}
+              </p>
+              <h3 id={`${project.id}-title`} data-reveal>
+                {project.title}
+              </h3>
+              <p class="summary" data-reveal>
+                {project.summary}
+              </p>
+
+              <dl class="facts" data-reveal>
+                {project.facts.map((fact) => (
+                  <div>
+                    <dt>{fact.label}</dt>
+                    <dd>{fact.value}</dd>
+                  </div>
+                ))}
+              </dl>
+
+              <div class="role" data-reveal>
+                <h4>My role</h4>
+                <p>{project.role}</p>
+              </div>
+
+              {project.story.map((block) => (
+                <div class="story" data-reveal>
+                  <h4>{block.heading}</h4>
+                  <ul>
+                    {block.points.map((point) => (
+                      <li>{point}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+
+              <ul class="chip-list" aria-label="Technologies" data-reveal>
+                {project.stack.map((tech) => (
+                  <li class="chip">{tech}</li>
+                ))}
+              </ul>
+
+              {project.links.length > 0 && (
+                <div class="project-links" data-reveal>
+                  {project.links.map((link) => (
+                    <a class="btn" href={link.href} rel="noopener">
+                      {link.label}
+                      <Icon name="external" />
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="libs" id="open-source" aria-labelledby="libs-title">
+      <div class="libs-head">
+        <p class="kicker" data-reveal>
+          <span class="index">{String(projects.length + 1).padStart(2, '0')}</span>
+          Open source
+        </p>
+        <h3 id="libs-title" data-reveal>{libraries.title}</h3>
+        <p class="summary" data-reveal>{libraries.summary}</p>
+      </div>
+
+      <ul class="lib-grid">
+        {
+          libraries.items.map((lib, i) => (
+            <li class="lib" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
+              <div class="demo">
+                {lib.id === 'expandable' ? (
+                  <details class="demo-card">
+                    <summary>
+                      <span class="demo-image" aria-hidden="true" />
+                      <span class="demo-title">Tap to expand</span>
+                      <span class="demo-chevron" aria-hidden="true" />
+                    </summary>
+                    <p>The card grows to reveal its content, the same interaction the Compose component provides.</p>
+                  </details>
+                ) : (
+                  <div class="demo-picker" data-picker>
+                    <button type="button" aria-label="Decrease quantity" data-step="-1">
+                      −
+                    </button>
+                    <output aria-live="polite" aria-label="Quantity">
+                      3
+                    </output>
+                    <button type="button" aria-label="Increase quantity" data-step="1">
+                      +
+                    </button>
+                  </div>
+                )}
+                <span class="demo-note">Web sketch of the interaction</span>
+              </div>
+
+              <div class="lib-body">
+                <p class="lib-meta">
+                  {lib.tech} · {lib.year}
+                </p>
+                <h4>{lib.name}</h4>
+                <p>{lib.description}</p>
+                <a class="lib-link" href={lib.href} rel="noopener">
+                  <Icon name="github" /> View repository
+                  <span class="sr-only"> for {lib.name}</span>
+                </a>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .work {
+    background: var(--dark);
+    color: var(--on-dark);
+  }
+
+  .projects {
+    display: grid;
+    gap: clamp(4rem, 9vw, 7.5rem);
+    margin-top: clamp(3rem, 7vw, 5.5rem);
+  }
+
+  .project {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+
+  .project-visual {
+    position: sticky;
+    top: 6rem;
+  }
+
+  .project.flip .project-visual {
+    order: 2;
+  }
+
+  .kicker {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--on-dark-muted);
+  }
+
+  .index {
+    color: var(--android);
+  }
+
+  h3 {
+    margin-top: 0.75rem;
+    font-family: var(--font-display);
+    font-weight: 420;
+    font-size: clamp(2rem, 4.2vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+  }
+
+  .summary {
+    margin-top: 1rem;
+    max-width: 52ch;
+    font-size: 1.1rem;
+    line-height: 1.55;
+    color: var(--on-dark);
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 1.75rem;
+    border-block: 1px solid var(--dark-line);
+  }
+
+  .facts div {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    gap: 0.3rem;
+    padding: 1rem 0.75rem 1rem 0;
+  }
+
+  .facts div + div {
+    padding-left: 1rem;
+    border-left: 1px solid var(--dark-line);
+  }
+
+  .facts dd {
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--android);
+  }
+
+  .facts dt {
+    font-size: 0.8rem;
+    line-height: 1.35;
+    color: var(--on-dark-muted);
+  }
+
+  h4 {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--on-dark-muted);
+  }
+
+  .role,
+  .story {
+    margin-top: 1.6rem;
+  }
+
+  .role p {
+    margin-top: 0.5rem;
+    color: var(--on-dark);
+  }
+
+  .story ul {
+    display: grid;
+    gap: 0.55rem;
+    margin-top: 0.65rem;
+  }
+
+  .story li {
+    position: relative;
+    padding-left: 1.25rem;
+    font-size: 0.98rem;
+    line-height: 1.55;
+    color: #cfd5d0;
+  }
+
+  .story li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.68em;
+    width: 0.5rem;
+    height: 1px;
+    background: var(--android);
+  }
+
+  .chip-list {
+    margin-top: 1.75rem;
+  }
+
+  .project-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+  }
+
+  /* Open-source libraries */
+  .libs {
+    margin-top: clamp(4rem, 9vw, 7.5rem);
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+    border-top: 1px solid var(--dark-line);
+  }
+
+  .libs h3 {
+    font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+  }
+
+  .lib-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin-top: 2.25rem;
+  }
+
+  .lib {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    border: 1px solid var(--dark-line);
+    border-radius: calc(var(--radius) + 2px);
+    background: var(--dark-2);
+    overflow: hidden;
+  }
+
+  .demo {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 13.5rem;
+    padding: 1.5rem 1.25rem 2.5rem;
+    border-bottom: 1px solid var(--dark-line);
+    background: radial-gradient(circle, rgb(255 255 255 / 0.05) 1px, transparent 1.2px) 0 0 / 20px 20px;
+  }
+
+  .demo-note {
+    position: absolute;
+    left: 1.1rem;
+    bottom: 0.8rem;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--on-dark-muted);
+  }
+
+  .demo-card {
+    width: min(100%, 17rem);
+    border: 1px solid #3a4743;
+    border-radius: 14px;
+    background: var(--dark);
+    overflow: hidden;
+  }
+
+  .demo-card summary {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 0.6rem 0.5rem;
+    padding: 0.6rem 0.75rem 0.7rem 0.6rem;
+    cursor: pointer;
+    list-style: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .demo-card summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .demo-image {
+    grid-column: 1 / -1;
+    height: 4.25rem;
+    border-radius: 9px;
+    background:
+      radial-gradient(circle at 78% 30%, #f2c14e 0 9%, transparent 9.5%),
+      linear-gradient(160deg, transparent 55%, #1b6643 55.5%),
+      linear-gradient(200deg, transparent 62%, #2c8a5c 62.5%), #223530;
+  }
+
+  .demo-title {
+    padding-left: 0.15rem;
+  }
+
+  .demo-chevron {
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-right: 0.25rem;
+    border-right: 1.5px solid var(--android);
+    border-bottom: 1.5px solid var(--android);
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform 0.25s var(--ease);
+  }
+
+  .demo-card[open] .demo-chevron {
+    transform: translateY(2px) rotate(-135deg);
+  }
+
+  .demo-card p {
+    padding: 0 0.75rem 0.85rem;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--on-dark-muted);
+  }
+
+  .demo-picker {
+    display: inline-grid;
+    grid-template-columns: 2.75rem 4rem 2.75rem;
+    align-items: center;
+    padding: 0.4rem;
+    border: 1px solid #3a4743;
+    border-radius: 16px;
+    background: var(--dark);
+  }
+
+  .demo-picker button {
+    height: 2.75rem;
+    border: 0;
+    border-radius: 11px;
+    background: var(--dark-2);
+    color: var(--android);
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+      background-color 0.2s var(--ease),
+      color 0.2s var(--ease);
+  }
+
+  .demo-picker button:hover:not(:disabled) {
+    background: var(--android);
+    color: var(--dark);
+  }
+
+  .demo-picker button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .demo-picker output {
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .lib-body {
+    display: grid;
+    align-content: start;
+    gap: 0.5rem;
+    padding: 1.4rem 1.4rem 1.5rem;
+  }
+
+  .lib-meta {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--android);
+  }
+
+  .lib-body h4 {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 450;
+    letter-spacing: -0.01em;
+    text-transform: none;
+    color: var(--on-dark);
+  }
+
+  .lib-body p:not(.lib-meta) {
+    font-size: 0.96rem;
+    line-height: 1.55;
+    color: var(--on-dark-muted);
+  }
+
+  .lib-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    margin-top: 0.5rem;
+    font-size: 0.92rem;
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--dark-line);
+    transition: text-decoration-color 0.2s var(--ease);
+  }
+
+  .lib-link:hover {
+    text-decoration-color: var(--android);
+  }
+
+  .lib-link :global(svg) {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  @media (max-width: 900px) {
+    .project {
+      grid-template-columns: 1fr;
+    }
+
+    .project-visual {
+      position: static;
+    }
+
+    .project.flip .project-visual {
+      order: 0;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .lib-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 460px) {
+    .facts {
+      grid-template-columns: 1fr;
+    }
+
+    .facts div {
+      flex-direction: row-reverse;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.7rem 0;
+    }
+
+    .facts div + div {
+      padding-left: 0;
+      border-left: 0;
+      border-top: 1px solid var(--dark-line);
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-picker]').forEach((picker) => {
+    const output = picker.querySelector('output');
+    const buttons = Array.from(picker.querySelectorAll<HTMLButtonElement>('button[data-step]'));
+    const min = 0;
+    const max = 9;
+    let value = 3;
+
+    const render = () => {
+      if (output) output.textContent = String(value);
+      buttons.forEach((button) => {
+        const step = Number(button.dataset.step);
+        button.disabled = value + step < min || value + step > max;
+      });
+    };
+
+    buttons.forEach((button) =>
+      button.addEventListener('click', () => {
+        value = Math.min(max, Math.max(min, value + Number(button.dataset.step)));
+        render();
+      }),
+    );
+    render();
+  });
+</script>

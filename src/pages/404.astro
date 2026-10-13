@@ -1,0 +1,40 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+
+const home = import.meta.env.BASE_URL;
+---
+
+<Base title="Page not found — Radu-Adrian Stavilă" description="This page does not exist." noindex>
+  <Header home={home} />
+  <main id="main" class="wrap missing">
+    <p class="eyebrow">Error 404</p>
+    <h1>This page doesn’t exist.</h1>
+    <p>The link may be outdated. Everything on this site lives on the home page.</p>
+    <a class="btn btn--solid" href={home}>Go to the home page</a>
+  </main>
+</Base>
+
+<style>
+  .missing {
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: 1.25rem;
+    min-height: calc(100vh - 4rem);
+    padding-block: 4rem;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  p:not(.eyebrow) {
+    max-width: 44ch;
+    color: var(--muted);
+  }
+</style>

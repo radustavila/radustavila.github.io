@@ -1,0 +1,441 @@
+---
+/**
+ * Decorative, code-drawn illustrations for the featured projects.
+ * They are diagrams and sketches, not screenshots of the real apps.
+ * Replace a variant with an <img> if you later add real screenshots.
+ */
+interface Props {
+  variant: 'migration' | 'expiry' | 'ble';
+}
+
+const { variant } = Astro.props;
+
+const expiryItems = [
+  { name: 'Milk', left: '2 days', level: 0.12, tone: 'hot' },
+  { name: 'Yogurt', left: '5 days', level: 0.3, tone: 'warm' },
+  { name: 'Eggs', left: '12 days', level: 0.55, tone: 'ok' },
+  { name: 'Olive oil', left: '4 months', level: 0.9, tone: 'ok' },
+];
+
+const bleBars = [0.25, 0.4, 0.3, 0.62, 0.85, 0.7, 0.95, 0.6, 0.42, 0.5, 0.28, 0.18];
+---
+
+<figure class={`visual visual--${variant}`} aria-hidden="true">
+  {
+    variant === 'migration' && (
+      <div class="migration">
+        <div class="col col--before">
+          <span class="col-label">Before</span>
+          <span class="layer">Java</span>
+          <span class="layer">XML / Views</span>
+          <span class="layer">Legacy components</span>
+        </div>
+        <div class="flow">
+          <svg viewBox="0 0 60 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 12h54M47 4l9 8-9 8" />
+          </svg>
+          <span>migration</span>
+        </div>
+        <div class="col col--after">
+          <span class="col-label">Now</span>
+          <span class="layer">Kotlin</span>
+          <span class="layer">Jetpack Compose</span>
+          <span class="layer">MVVM / MVI</span>
+          <span class="layer">Coroutines</span>
+        </div>
+      </div>
+    )
+  }
+
+  {
+    variant === 'expiry' && (
+      <div class="phone">
+        <div class="phone-top">
+          <span>Expiring soon</span>
+          <i />
+        </div>
+        <ul class="rows">
+          {expiryItems.map((item) => (
+            <li class={`row row--${item.tone}`}>
+              <span class="row-name">{item.name}</span>
+              <span class="row-left">{item.left}</span>
+              <span class="row-bar">
+                <i style={`width: ${item.level * 100}%`} />
+              </span>
+            </li>
+          ))}
+        </ul>
+        <span class="fab">+</span>
+      </div>
+    )
+  }
+
+  {
+    variant === 'ble' && (
+      <div class="ble">
+        <div class="chip-board">
+          <span class="pins" />
+          <span class="chip-name">ESP32</span>
+          <span class="chip-sub">touch sensor</span>
+          <span class="pins" />
+        </div>
+        <div class="waves">
+          <i />
+          <i />
+          <i />
+          <span>BLE · GATT</span>
+        </div>
+        <div class="phone phone--small">
+          <div class="phone-top">
+            <span>Intensity</span>
+            <i />
+          </div>
+          <div class="bars">
+            {bleBars.map((h, i) => (
+              <i style={`--h: ${h}; --i: ${i}`} />
+            ))}
+          </div>
+          <div class="readout">
+            <span>live</span>
+            <span>session</span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+  <figcaption>{variant === 'migration' ? 'Architecture migration' : 'Illustration, not a screenshot'}</figcaption>
+</figure>
+
+<style>
+  .visual {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: clamp(19rem, 34vw, 25rem);
+    padding: clamp(1.5rem, 4vw, 2.75rem) clamp(1rem, 3vw, 2.25rem) 3rem;
+    border: 1px solid var(--dark-line);
+    border-radius: calc(var(--radius) + 6px);
+    background:
+      radial-gradient(circle, rgb(255 255 255 / 0.05) 1px, transparent 1.2px) 0 0 / 20px 20px,
+      var(--dark-2);
+    font-family: var(--font-mono);
+    color: var(--on-dark);
+    overflow: hidden;
+  }
+
+  figcaption {
+    position: absolute;
+    left: 1.1rem;
+    bottom: 0.9rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--on-dark-muted);
+    opacity: 0.8;
+  }
+
+  /* Migration diagram */
+  .migration {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: clamp(0.6rem, 2vw, 1.25rem);
+    align-items: center;
+    width: 100%;
+    max-width: 30rem;
+  }
+
+  .col {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .col-label {
+    margin-bottom: 0.25rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--on-dark-muted);
+  }
+
+  .layer {
+    padding: 0.7rem 0.75rem;
+    border: 1px solid var(--dark-line);
+    border-radius: 9px;
+    font-size: clamp(0.68rem, 1.4vw, 0.8rem);
+    line-height: 1.25;
+  }
+
+  .col--before .layer {
+    border-style: dashed;
+    color: var(--on-dark-muted);
+  }
+
+  .col--after .layer {
+    border-color: color-mix(in srgb, var(--android) 55%, transparent);
+    background: color-mix(in srgb, var(--android) 9%, transparent);
+  }
+
+  .col--after .col-label {
+    color: var(--android);
+  }
+
+  .flow {
+    display: grid;
+    justify-items: center;
+    gap: 0.35rem;
+    color: var(--android);
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .flow svg {
+    width: clamp(1.75rem, 5vw, 3.25rem);
+  }
+
+  /* Phone frame */
+  .phone {
+    position: relative;
+    width: min(100%, 15.5rem);
+    padding: 1rem 0.9rem 3.4rem;
+    border: 1px solid #3a4743;
+    border-radius: 26px;
+    background: var(--dark);
+    box-shadow:
+      0 0 0 5px #0b0f0e,
+      0 24px 50px -20px rgb(0 0 0 / 0.7);
+  }
+
+  .phone-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.9rem;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 550;
+  }
+
+  .phone-top i {
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 50%;
+    background: var(--dark-line);
+  }
+
+  .rows {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.45rem 0.5rem;
+    padding: 0.65rem 0.7rem;
+    border-radius: 11px;
+    background: var(--dark-2);
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    --tone: var(--android);
+  }
+
+  .row--hot {
+    --tone: #ff7a66;
+  }
+
+  .row--warm {
+    --tone: #f2c14e;
+  }
+
+  .row-left {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--tone);
+  }
+
+  .row-bar {
+    grid-column: 1 / -1;
+    height: 4px;
+    border-radius: 4px;
+    background: var(--dark-line);
+  }
+
+  .row-bar i {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--tone);
+  }
+
+  .fab {
+    position: absolute;
+    right: 0.9rem;
+    bottom: 0.9rem;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 12px;
+    background: var(--android);
+    color: var(--dark);
+    font-family: var(--font-body);
+    font-size: 1.3rem;
+    line-height: 1;
+  }
+
+  /* BLE diagram */
+  .ble {
+    display: grid;
+    grid-template-columns: auto minmax(2.5rem, 1fr) auto;
+    align-items: center;
+    gap: clamp(0.5rem, 2vw, 1.25rem);
+    width: 100%;
+    max-width: 30rem;
+  }
+
+  .chip-board {
+    display: grid;
+    justify-items: center;
+    gap: 0.3rem;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid #3a4743;
+    border-radius: 8px;
+    background: var(--dark);
+  }
+
+  .chip-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .chip-sub {
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--on-dark-muted);
+    white-space: nowrap;
+  }
+
+  .pins {
+    width: 100%;
+    height: 6px;
+    background: repeating-linear-gradient(90deg, #56645f 0 4px, transparent 4px 9px);
+  }
+
+  .waves {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    height: 4.5rem;
+    color: var(--android);
+  }
+
+  .waves i {
+    width: 0.55rem;
+    height: 1.4rem;
+    border: 2px solid currentColor;
+    border-left: 0;
+    border-radius: 0 999px 999px 0;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  .waves i:nth-child(2) {
+    height: 2.4rem;
+    animation-delay: 0.25s;
+  }
+
+  .waves i:nth-child(3) {
+    height: 3.4rem;
+    animation-delay: 0.5s;
+  }
+
+  .waves span {
+    position: absolute;
+    top: 100%;
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    color: var(--on-dark-muted);
+  }
+
+  .phone--small {
+    width: clamp(8.5rem, 22vw, 11rem);
+    padding: 0.85rem 0.75rem 0.85rem;
+    border-radius: 22px;
+  }
+
+  .phone--small .phone-top {
+    font-size: 0.8rem;
+  }
+
+  .phone--small .phone-top i {
+    width: 0.6rem;
+    height: 0.6rem;
+    background: var(--android);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+
+  .bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 6rem;
+    padding: 0.5rem;
+    border-radius: 10px;
+    background: var(--dark-2);
+  }
+
+  .bars i {
+    flex: 1;
+    height: calc(var(--h) * 100%);
+    border-radius: 2px;
+    background: var(--android);
+    opacity: calc(0.35 + var(--h) * 0.65);
+    transform-origin: bottom;
+    animation: sense 2.8s ease-in-out infinite;
+    animation-delay: calc(var(--i) * -0.23s);
+  }
+
+  .readout {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.6rem;
+    font-size: 0.56rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--on-dark-muted);
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 0.25;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes sense {
+    0%,
+    100% {
+      transform: scaleY(1);
+    }
+    50% {
+      transform: scaleY(0.6);
+    }
+  }
+
+  @media (max-width: 520px) {
+    .chip-board {
+      padding-inline: 0.5rem;
+    }
+
+    .waves span {
+      display: none;
+    }
+  }
+</style>
