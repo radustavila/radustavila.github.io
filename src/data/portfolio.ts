@@ -11,6 +11,7 @@ export const profile = {
   secondaryRole: 'Mobile Technical Lead',
   heroEyebrow: 'Software Engineer · Senior Android Developer · Mobile Tech Lead',
   location: 'Cluj-Napoca, Romania',
+  availability: 'Available for B2B & freelance projects',
   headline: ['Android apps,', 'owned end to end.'],
   intro:
     'I’m a Senior Android Engineer with 6+ years of experience building and maintaining production apps in Kotlin and Jetpack Compose. I lead Android development for the GHIN app, the official USGA handicap application, and I build and publish my own products on Google Play.',

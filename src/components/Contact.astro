@@ -10,6 +10,7 @@ const year = new Date().getFullYear();
     <p class="eyebrow" data-reveal>05 · Contact</p>
     <h2 id="contact-title" data-reveal>{contact.heading}</h2>
     <p class="body" data-reveal>{contact.body}</p>
+    <p class="availability" data-reveal><span class="availability-dot" aria-hidden="true"></span>{profile.availability}</p>
 
     <a class="email" href={`mailto:${links.email}`} data-reveal>
       <Icon name="mail" />
@@ -84,6 +85,23 @@ const year = new Date().getFullYear();
     margin-top: 1.5rem;
     max-width: 50ch;
     color: var(--on-dark-muted);
+  }
+
+  .availability {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-top: 1rem;
+    color: var(--android);
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  .availability-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--android);
   }
 
   .email {
