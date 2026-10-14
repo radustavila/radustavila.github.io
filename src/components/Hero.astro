@@ -19,9 +19,9 @@ import { profile, links, ledger, stats } from '../data/portfolio';
         </p>
         <div class="actions" data-reveal style="--reveal-delay: 180ms">
           <a class="btn btn--solid btn--primary" href="#work">See selected work <Icon name="arrow" /></a>
-          <a class="btn" href={links.resume} rel="noopener"><Icon name="doc" /> Résumé</a>
-          <a class="btn btn--social" href={links.github} rel="noopener me"><Icon name="github" /><span class="btn-label">GitHub</span></a>
-          <a class="btn btn--social" href={links.linkedin} rel="noopener me"><Icon name="linkedin" /><span class="btn-label">LinkedIn</span></a>
+          <a class="btn" href={links.resume} target="_blank" rel="noopener"><Icon name="doc" /> Résumé</a>
+          <a class="btn btn--social" href={links.github} target="_blank" rel="noopener me"><Icon name="github" /><span class="btn-label">GitHub</span></a>
+          <a class="btn btn--social" href={links.linkedin} target="_blank" rel="noopener me"><Icon name="linkedin" /><span class="btn-label">LinkedIn</span></a>
           <a class="btn btn--social" href={`mailto:${links.email}`}><Icon name="mail" /><span class="btn-label">Email</span></a>
         </div>
       </div>

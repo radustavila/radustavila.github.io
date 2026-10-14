@@ -93,7 +93,7 @@ import { projects, libraries } from '../data/portfolio';
               {project.links.length > 0 && (
                 <div class="project-links" data-reveal>
                   {project.links.map((link) => (
-                    <a class="btn" href={link.href} rel="noopener">
+                    <a class="btn" href={link.href} target="_blank" rel="noopener">
                       {link.label}
                       <Icon name="external" />
                     </a>
@@ -151,7 +151,7 @@ import { projects, libraries } from '../data/portfolio';
                 </p>
                 <h4>{lib.name}</h4>
                 <p>{lib.description}</p>
-                <a class="lib-link" href={lib.href} rel="noopener">
+                <a class="lib-link" href={lib.href} target="_blank" rel="noopener">
                   <Icon name="github" /> View repository
                   <span class="sr-only"> for {lib.name}</span>
                 </a>
