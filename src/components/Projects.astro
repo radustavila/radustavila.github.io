@@ -178,7 +178,7 @@ import { projects, libraries } from '../data/portfolio';
   .projects {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: clamp(4rem, 9vw, 7.5rem);
+    gap: clamp(5rem, 12vw, 10rem);
     margin-top: clamp(3rem, 7vw, 5.5rem);
   }
 
@@ -549,12 +549,34 @@ import { projects, libraries } from '../data/portfolio';
       grid-template-columns: minmax(0, 1fr);
     }
 
-    .project-visual {
-      position: static;
+    /* Stacked layout: flatten the body so the visual can sit between the intro (kicker, title, summary)
+       and the rest of the project details. */
+    .project {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
     }
 
-    .project.flip .project-visual {
+    .project-body {
+      display: contents;
+    }
+
+    .project-body > * {
+      order: 2;
+    }
+
+    .project-body > .kicker,
+    .project-body > h3,
+    .project-body > .summary {
       order: 0;
+    }
+
+    .project-visual,
+    .project.flip .project-visual {
+      position: static;
+      order: 1;
+      margin-top: 1.75rem;
     }
   }
 

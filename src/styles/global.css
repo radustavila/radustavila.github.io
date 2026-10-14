@@ -30,6 +30,13 @@
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
+/* Above phone size the section rail (SectionRail.astro) sits in the right gutter, so keep it wide enough. */
+@media (min-width: 761px) {
+  :root {
+    --gutter: 2.5rem;
+  }
+}
+
 @media (max-width: 480px) {
   :root {
     --gutter: 1rem;

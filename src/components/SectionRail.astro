@@ -1,0 +1,206 @@
+---
+import { nav, projects } from '../data/portfolio';
+
+interface RailItem {
+  id: string;
+  label: string;
+  children?: { id: string; label: string }[];
+}
+
+// The Work section also lists each project and the open-source block as sub-items.
+const workChildren = [
+  ...projects.map((project) => ({ id: project.id, label: project.title })),
+  { id: 'open-source', label: 'Open source' },
+];
+
+const items: RailItem[] = [
+  { id: 'top', label: 'Intro' },
+  ...nav.map((item) => (item.id === 'work' ? { ...item, children: workChildren } : item)),
+];
+---
+
+<nav class="rail" aria-label="Page sections" data-rail>
+  <ul>
+    {
+      items.map((item) => (
+        <li>
+          <a href={`#${item.id}`} data-rail-link={item.id} data-rail-level="section">
+            <span class="label">{item.label}</span>
+            <span class="dash" aria-hidden="true" />
+          </a>
+          {item.children && (
+            <ul class="sub">
+              {item.children.map((child) => (
+                <li>
+                  <a href={`#${child.id}`} data-rail-link={child.id} data-rail-level="sub">
+                    <span class="label">{child.label}</span>
+                    <span class="dash" aria-hidden="true" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .rail {
+    display: none;
+  }
+
+  /* Hidden on phones; above the header's mobile breakpoint the gutter is wide enough for the dashes (see global.css). */
+  @media (min-width: 761px) {
+    .rail {
+      --rail-ink: var(--ink);
+      --rail-muted: color-mix(in srgb, var(--ink) 28%, transparent);
+      --rail-accent: var(--green);
+      --rail-label-bg: var(--ink);
+      --rail-label-fg: var(--paper);
+
+      position: fixed;
+      top: 50%;
+      right: 0.25rem;
+      z-index: 40;
+      display: block;
+      transform: translateY(-50%);
+    }
+
+    .rail.is-dark {
+      --rail-ink: var(--on-dark);
+      --rail-muted: color-mix(in srgb, var(--on-dark) 30%, transparent);
+      --rail-accent: var(--android);
+      --rail-label-bg: var(--on-dark);
+      --rail-label-fg: var(--dark);
+    }
+
+    ul {
+      display: grid;
+      gap: 0.15rem;
+    }
+
+    .sub {
+      gap: 0;
+    }
+
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      padding: 0.55rem 0.5rem;
+      text-decoration: none;
+    }
+
+    .sub a {
+      padding-block: 0.3rem;
+    }
+
+    .dash {
+      width: 0.9rem;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--rail-muted);
+      transition:
+        width 0.3s var(--ease),
+        background-color 0.3s var(--ease);
+    }
+
+    .sub .dash {
+      width: 0.45rem;
+      height: 1.5px;
+    }
+
+    .label {
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: var(--rail-label-bg);
+      color: var(--rail-label-fg);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateX(0.4rem);
+      pointer-events: none;
+      transition:
+        opacity 0.2s var(--ease),
+        transform 0.2s var(--ease);
+    }
+
+    .sub .label {
+      font-size: 0.64rem;
+      text-transform: none;
+      letter-spacing: 0.02em;
+    }
+
+    a:hover .dash,
+    a:focus-visible .dash {
+      width: 1.4rem;
+      background: var(--rail-ink);
+    }
+
+    .sub a:hover .dash,
+    .sub a:focus-visible .dash {
+      width: 0.9rem;
+    }
+
+    a:hover .label,
+    a:focus-visible .label {
+      opacity: 1;
+      transform: none;
+    }
+
+    a[aria-current='true'] .dash {
+      width: 1.6rem;
+      background: var(--rail-accent);
+    }
+
+    .sub a[aria-current='true'] .dash {
+      width: 1rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dash,
+    .label {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const rail = document.querySelector<HTMLElement>('[data-rail]');
+  const railLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-rail-link]'));
+  const targets = railLinks
+    .map((link) => document.getElementById(link.dataset.railLink ?? ''))
+    .filter((el): el is HTMLElement => el !== null);
+
+  if (rail && targets.length && 'IntersectionObserver' in window) {
+    // Ids of the targets currently crossing the vertical middle of the viewport, where the rail sits.
+    // A section and one of its sub-items can both be current at once.
+    const current = new Set<string>();
+
+    const spy = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) current.add(entry.target.id);
+          else current.delete(entry.target.id);
+        }
+        railLinks.forEach((link) => {
+          if (current.has(link.dataset.railLink ?? '')) link.setAttribute('aria-current', 'true');
+          else link.removeAttribute('aria-current');
+        });
+        const section = targets.find(
+          (el) => current.has(el.id) && railLinks.some((l) => l.dataset.railLink === el.id && l.dataset.railLevel === 'section'),
+        );
+        if (section) rail.classList.toggle('is-dark', section.classList.contains('on-dark'));
+      },
+      { rootMargin: '-50% 0px -50% 0px' },
+    );
+    targets.forEach((target) => spy.observe(target));
+  }
+</script>
