@@ -23,7 +23,6 @@ import { projects, libraries } from '../data/portfolio';
 
             <div class="project-body">
               <p class="kicker" data-reveal>
-                <span class="index">{String(index + 1).padStart(2, '0')}</span>
                 {project.kicker}
               </p>
               <h3 id={`${project.id}-title`} data-reveal>
@@ -47,7 +46,7 @@ import { projects, libraries } from '../data/portfolio';
                 <p>{project.role}</p>
               </div>
 
-              {project.story.map((block) => (
+              {project.story.slice(0, 1).map((block) => (
                 <div class="story" data-reveal>
                   <h4>{block.heading}</h4>
                   <ul>
@@ -57,6 +56,33 @@ import { projects, libraries } from '../data/portfolio';
                   </ul>
                 </div>
               ))}
+
+              {project.story.length > 1 && (
+                <>
+                  <div class="project-extra" id={`${project.id}-more`}>
+                    {project.story.slice(1).map((block) => (
+                      <div class="story" data-reveal>
+                        <h4>{block.heading}</h4>
+                        <ul>
+                          {block.points.map((point) => (
+                            <li>{point}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    class="more-toggle"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls={`${project.id}-more`}
+                    data-more-toggle
+                  >
+                    <span data-more-label>Show more</span>
+                    <span class="more-chevron" aria-hidden="true" />
+                  </button>
+                </>
+              )}
 
               <ul class="chip-list" aria-label="Technologies" data-reveal>
                 {project.stack.map((tech) => (
@@ -83,7 +109,6 @@ import { projects, libraries } from '../data/portfolio';
     <div class="libs" id="open-source" aria-labelledby="libs-title">
       <div class="libs-head">
         <p class="kicker" data-reveal>
-          <span class="index">{String(projects.length + 1).padStart(2, '0')}</span>
           Open source
         </p>
         <h3 id="libs-title" data-reveal>{libraries.title}</h3>
@@ -147,6 +172,7 @@ import { projects, libraries } from '../data/portfolio';
 
   .projects {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: clamp(4rem, 9vw, 7.5rem);
     margin-top: clamp(3rem, 7vw, 5.5rem);
   }
@@ -176,10 +202,6 @@ import { projects, libraries } from '../data/portfolio';
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--on-dark-muted);
-  }
-
-  .index {
-    color: var(--android);
   }
 
   h3 {
@@ -274,6 +296,35 @@ import { projects, libraries } from '../data/portfolio';
     width: 0.5rem;
     height: 1px;
     background: var(--android);
+  }
+
+  .more-toggle {
+    display: none;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+    padding: 0.35rem 0;
+    border: 0;
+    background: none;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--android);
+    cursor: pointer;
+  }
+
+  .more-chevron {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform 0.25s var(--ease);
+  }
+
+  .more-toggle[aria-expanded='true'] .more-chevron {
+    transform: translateY(2px) rotate(-135deg);
   }
 
   .chip-list {
@@ -490,7 +541,7 @@ import { projects, libraries } from '../data/portfolio';
 
   @media (max-width: 900px) {
     .project {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
 
     .project-visual {
@@ -504,20 +555,58 @@ import { projects, libraries } from '../data/portfolio';
 
   @media (max-width: 700px) {
     .lib-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    /* Phones show only the first story block until "Show more" is pressed. */
+    :global(.js) .project-extra:not(.is-open) {
+      display: none;
+    }
+
+    :global(.js) .more-toggle {
+      display: inline-flex;
+    }
+  }
+
+  @media (max-width: 480px) {
+    h3 {
+      font-size: 1.85rem;
+    }
+
+    .summary {
+      font-size: 1rem;
+    }
+
+    .story li {
+      font-size: 0.94rem;
+    }
+
+    .role,
+    .story {
+      margin-top: 1.35rem;
     }
   }
 
   @media (max-width: 460px) {
     .facts {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
 
+    /* Value in a fixed left column, label left-aligned right next to it. */
     .facts div {
-      flex-direction: row-reverse;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 6.5rem minmax(0, 1fr);
+      gap: 0.75rem;
       align-items: baseline;
       padding: 0.7rem 0;
+    }
+
+    .facts dd {
+      grid-area: 1 / 1;
+    }
+
+    .facts dt {
+      grid-area: 1 / 2;
     }
 
     .facts div + div {
@@ -529,6 +618,17 @@ import { projects, libraries } from '../data/portfolio';
 </style>
 
 <script>
+  document.querySelectorAll<HTMLButtonElement>('[data-more-toggle]').forEach((toggle) => {
+    const panel = document.getElementById(toggle.getAttribute('aria-controls') ?? '');
+    const label = toggle.querySelector('[data-more-label]');
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') !== 'true';
+      toggle.setAttribute('aria-expanded', String(open));
+      panel?.classList.toggle('is-open', open);
+      if (label) label.textContent = open ? 'Show less' : 'Show more';
+    });
+  });
+
   document.querySelectorAll<HTMLElement>('[data-picker]').forEach((picker) => {
     const output = picker.querySelector('output');
     const buttons = Array.from(picker.querySelectorAll<HTMLButtonElement>('button[data-step]'));

@@ -156,6 +156,10 @@ const { home = '' } = Astro.props;
   }
 
   @media (max-width: 760px) {
+    :global(html.menu-open) {
+      overflow: hidden;
+    }
+
     :global(.js) .menu-toggle {
       display: grid;
       place-items: center;
@@ -215,14 +219,26 @@ const { home = '' } = Astro.props;
   const setMenu = (open: boolean) => {
     navEl?.classList.toggle('is-open', open);
     toggle?.setAttribute('aria-expanded', String(open));
+    // Keep the page behind the open menu from scrolling.
+    document.documentElement.classList.toggle('menu-open', open);
   };
+
+  const isOpen = () => toggle?.getAttribute('aria-expanded') === 'true';
 
   toggle?.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
   navLinks.forEach((link) => link.addEventListener('click', () => setMenu(false)));
+  // Tapping anywhere outside the header closes the menu.
+  document.addEventListener('click', (event) => {
+    if (isOpen() && header && !header.contains(event.target as Node)) setMenu(false);
+  });
+  // Close it if the viewport grows past the mobile breakpoint.
+  window.matchMedia('(max-width: 760px)').addEventListener('change', (event) => {
+    if (!event.matches) setMenu(false);
+  });
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+    if (event.key === 'Escape' && isOpen()) {
       setMenu(false);
-      toggle.focus();
+      toggle?.focus();
     }
   });
 

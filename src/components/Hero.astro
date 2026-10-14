@@ -8,7 +8,7 @@ import { profile, links, ledger, stats } from '../data/portfolio';
   <div class="wrap">
     <div class="hero-main">
       <div class="hero-copy">
-        <p class="eyebrow" data-reveal>{profile.role} · {profile.secondaryRole}</p>
+        <p class="eyebrow" data-reveal>{profile.heroEyebrow}</p>
         <h1 data-reveal style="--reveal-delay: 60ms">
           <span class="sr-only">{profile.name}. </span>
           {profile.headline.map((line, i) => <span class:list={['line', { accent: i === 0 }]}>{line} </span>)}
@@ -18,10 +18,11 @@ import { profile, links, ledger, stats } from '../data/portfolio';
           {profile.intro}
         </p>
         <div class="actions" data-reveal style="--reveal-delay: 180ms">
-          <a class="btn btn--solid" href="#work">See selected work <Icon name="arrow" /></a>
-          <a class="btn" href={links.github} rel="noopener me"><Icon name="github" /> GitHub</a>
-          <a class="btn" href={links.linkedin} rel="noopener me"><Icon name="linkedin" /> LinkedIn</a>
-          <a class="btn" href={`mailto:${links.email}`}><Icon name="mail" /> Email</a>
+          <a class="btn btn--solid btn--primary" href="#work">See selected work <Icon name="arrow" /></a>
+          <a class="btn" href={links.resume} rel="noopener"><Icon name="doc" /> Résumé</a>
+          <a class="btn btn--social" href={links.github} rel="noopener me"><Icon name="github" /><span class="btn-label">GitHub</span></a>
+          <a class="btn btn--social" href={links.linkedin} rel="noopener me"><Icon name="linkedin" /><span class="btn-label">LinkedIn</span></a>
+          <a class="btn btn--social" href={`mailto:${links.email}`}><Icon name="mail" /><span class="btn-label">Email</span></a>
         </div>
       </div>
 
@@ -39,12 +40,17 @@ import { profile, links, ledger, stats } from '../data/portfolio';
 
     <ul class="stats" data-reveal style="--reveal-delay: 300ms">
       {
-        stats.map((stat) => (
-          <li>
-            <span class="stat-value">{stat.value}</span>
-            <span class="stat-label">{stat.label}</span>
-          </li>
-        ))
+        stats.map((stat) => {
+          const Tag = stat.href ? 'a' : 'div';
+          return (
+            <li>
+              <Tag class="stat" href={stat.href}>
+                <span class="stat-value">{stat.value}</span>
+                <span class="stat-label">{stat.label}</span>
+              </Tag>
+            </li>
+          );
+        })
       }
     </ul>
   </div>
@@ -151,10 +157,17 @@ import { profile, links, ledger, stats } from '../data/portfolio';
   }
 
   .stats li {
+    display: flex;
+    padding: 1.4rem 1.25rem 0 0;
+  }
+
+  .stat {
     display: grid;
+    flex: 1;
     gap: 0.35rem;
     align-content: start;
-    padding: 1.4rem 1.25rem 0 0;
+    color: inherit;
+    text-decoration: none;
   }
 
   .stats li + li {
@@ -178,12 +191,49 @@ import { profile, links, ledger, stats } from '../data/portfolio';
 
   @media (max-width: 900px) {
     .hero-main {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       align-items: start;
     }
 
     .ledger {
       max-width: 34rem;
+    }
+  }
+
+  /* Phones: full-width primary action, then résumé plus icon-only social links on one row. */
+  @media (max-width: 480px) {
+    .actions {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) repeat(3, 2.9rem);
+      gap: 0.5rem;
+    }
+
+    .actions .btn {
+      justify-content: center;
+    }
+
+    .btn--primary {
+      grid-column: 1 / -1;
+    }
+
+    .btn--social {
+      height: 2.9rem;
+      padding: 0;
+    }
+
+    .btn--social :global(svg) {
+      width: 1.1rem;
+      height: 1.1rem;
+    }
+
+    /* Visually hidden but still the link's accessible name. */
+    .btn-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
     }
   }
 

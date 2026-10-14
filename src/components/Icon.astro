@@ -1,6 +1,6 @@
 ---
 interface Props {
-  name: 'arrow' | 'external' | 'github' | 'linkedin' | 'mail' | 'play' | 'pin';
+  name: 'arrow' | 'external' | 'github' | 'linkedin' | 'mail' | 'play' | 'pin' | 'doc';
 }
 
 const { name } = Astro.props;
@@ -54,6 +54,14 @@ const { name } = Astro.props;
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M8 14.5s4.5-4.1 4.5-7.7a4.5 4.5 0 0 0-9 0c0 3.6 4.5 7.7 4.5 7.7Z" />
       <circle cx="8" cy="6.8" r="1.6" />
+    </svg>
+  )
+}
+{
+  name === 'doc' && (
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M9.5 1.5H4.25A1.25 1.25 0 0 0 3 2.75v10.5c0 .69.56 1.25 1.25 1.25h7.5c.69 0 1.25-.56 1.25-1.25V5L9.5 1.5Z" />
+      <path d="M9.5 1.5V5H13M5.75 8.5h4.5M5.75 11h4.5" />
     </svg>
   )
 }

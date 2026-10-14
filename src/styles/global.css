@@ -30,6 +30,13 @@
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
+@media (max-width: 480px) {
+  :root {
+    --gutter: 1rem;
+    --section: 3.75rem;
+  }
+}
+
 *,
 *::before,
 *::after {
@@ -51,6 +58,14 @@ body {
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
 }
 
 h1,
@@ -70,6 +85,18 @@ ul,
 ol {
   padding: 0;
   list-style: none;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p,
+li,
+dd {
+  text-wrap: pretty;
 }
 
 a {

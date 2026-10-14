@@ -9,6 +9,7 @@ export const profile = {
   shortName: 'Radu Stavilă',
   role: 'Senior Android Engineer',
   secondaryRole: 'Mobile Technical Lead',
+  heroEyebrow: 'Software Engineer · Senior Android Developer · Mobile Tech Lead',
   location: 'Cluj-Napoca, Romania',
   headline: ['Android apps,', 'owned end to end.'],
   intro:
@@ -22,6 +23,8 @@ export const links = {
   email: 'stavila.radu@yahoo.com',
   github: 'https://github.com/radustavila',
   linkedin: 'https://www.linkedin.com/in/radu-stavila/',
+  /** The résumé button points at LinkedIn; the PDF CV stays private (it includes a phone number). */
+  resume: 'https://www.linkedin.com/in/radu-stavila/',
   ghinPlay: 'https://play.google.com/store/apps/details?id=com.advancedmobile.android.ghin&hl=en&gl=US',
   xpirySite: 'https://xpiry.net/',
   xpiryPlay: 'https://play.google.com/store/apps/details?id=com.radustavila.xpiry',
@@ -44,11 +47,11 @@ export const ledger = [
   { key: 'Based', value: 'Cluj-Napoca, Romania' },
 ];
 
-export const stats = [
-  { value: '6+', label: 'years building production Android apps' },
-  { value: '1M+', label: 'downloads of the GHIN app I lead on Android' },
-  { value: '30k+', label: 'downloads of Xpiry, my own product, rated 4.7+' },
-  { value: '3', label: 'Android engineers mentored and coordinated at peak' },
+export const stats: { value: string; label: string; href?: string }[] = [
+  { value: '6+', label: 'years building production Android apps', href: '#experience' },
+  { value: '1M+', label: 'downloads of the GHIN app I lead on Android', href: '#ghin' },
+  { value: '30k+', label: 'downloads of Xpiry, my own product, rated 4.7+', href: '#xpiry' },
+  { value: '3', label: 'Android engineers mentored and coordinated at peak', href: '#experience' },
 ];
 
 export const about = {
