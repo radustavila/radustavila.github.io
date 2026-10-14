@@ -125,7 +125,8 @@ export const projects: Project[] = [
         heading: 'Key technical decision',
         points: [
           'Led the migration from Java and XML to Kotlin, Jetpack Compose and a modern MVVM/MVI architecture, improving maintainability and speeding up future feature work.',
-          'Improved stability by continuously reducing technical debt and refactoring legacy components rather than leaving them in place.',
+          'Implemented UI designs from Figma with high fidelity.',
+          'Improved stability and maintainability through refactoring, technical debt reduction and modern Android development practices.',
         ],
       },
     ],
@@ -207,15 +208,15 @@ export const projects: Project[] = [
   {
     id: 'myblesense',
     visual: 'ble',
-    kicker: 'Personal project · Android + IoT',
+    kicker: 'Personal proof of concept · Kotlin Multiplatform + IoT',
     title: 'MyBleSense',
     summary:
-      'An end-to-end system where an Android app receives and tracks real-time touch intensity data from an ESP32 microcontroller over Bluetooth Low Energy.',
-    role: 'Designed and built the complete system, focused on BLE communication and real-time sensing.',
+      'A proof of concept exploring Kotlin Multiplatform and BLE communication between an Android/iOS app and an ESP32 microcontroller, with real-time capacitive touch sensing and data tracking.',
+    role: 'Designed and built the complete system, focused on shared KMP logic, BLE communication and real-time sensing.',
     facts: [
+      { value: 'KMP', label: 'shared logic for Android and iOS' },
       { value: 'BLE', label: 'scanning and GATT' },
-      { value: 'ESP32', label: 'capacitive touch sensing' },
-      { value: 'Real-time', label: 'intensity tracking' },
+      { value: 'ESP32', label: 'real-time capacitive touch sensing' },
     ],
     story: [
       {
@@ -228,11 +229,12 @@ export const projects: Project[] = [
       {
         heading: 'How it’s built',
         points: [
-          'Kotlin and Jetpack Compose with Coroutines and Flow, Clean Architecture, Hilt and a multi-module project structure.',
+          'Kotlin Multiplatform shares the business logic across Android and iOS, with platform-specific UI in Compose Multiplatform and native BLE integrations.',
+          'Coroutines and Flow, Clean Architecture, Hilt and a multi-module project structure.',
         ],
       },
     ],
-    stack: ['Kotlin', 'Jetpack Compose', 'Coroutines / Flow', 'Clean Architecture', 'Hilt', 'Multi-module', 'BLE GATT'],
+    stack: ['Kotlin Multiplatform', 'Compose Multiplatform', 'Coroutines / Flow', 'Clean Architecture', 'Hilt', 'Multi-module', 'BLE GATT'],
     links: [],
   },
 ];
@@ -307,7 +309,7 @@ export const education = [
 export const skills = [
   {
     title: 'Languages & UI',
-    items: ['Kotlin', 'Java', 'Jetpack Compose', 'XML / Views', 'Android SDK'],
+    items: ['Kotlin', 'Java', 'Jetpack Compose', 'Kotlin & Compose Multiplatform', 'XML / Views', 'Data Binding', 'Android SDK'],
   },
   {
     title: 'Architecture',
