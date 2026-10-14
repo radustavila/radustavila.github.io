@@ -82,9 +82,12 @@ export const about = {
 
 export type ProjectLink = { label: string; href: string };
 
+export type Screenshot = { src: string; alt: string };
+
 export type Project = {
   id: string;
-  visual: 'migration' | 'expiry' | 'ble';
+  /** Real app screenshots shown in a carousel, or a code-drawn illustration. */
+  visual: 'migration' | 'ble' | { screenshots: Screenshot[] };
   kicker: string;
   title: string;
   summary: string;
@@ -131,7 +134,42 @@ export const projects: Project[] = [
   },
   {
     id: 'xpiry',
-    visual: 'expiry',
+    visual: {
+      screenshots: [
+        {
+          src: 'images/xpiry/add-products.webp',
+          alt: 'Add products screen: scan a barcode or fill in name, category, storage and expiration date',
+        },
+        {
+          src: 'images/xpiry/track-products.webp',
+          alt: 'My products list showing expired, expiring today and this-week counts, sorted by date',
+        },
+        {
+          src: 'images/xpiry/check-products.webp',
+          alt: 'Product detail screen showing expiration date, storage, quantity, barcode and an opened-on timer',
+        },
+        {
+          src: 'images/xpiry/manage-settings.webp',
+          alt: 'Settings screen for notifications, date format, expiry colors and categories',
+        },
+        {
+          src: 'images/xpiry/customize-list.webp',
+          alt: 'Customize screen for choosing which modules and product-card fields to show',
+        },
+        {
+          src: 'images/xpiry/insights.webp',
+          alt: 'Insights screen with charts for inventory by category, by shelf, and waste tracking',
+        },
+        {
+          src: 'images/xpiry/manage-modules.webp',
+          alt: 'Manage modules and filters screens for Food, Medicine, Cosmetics and Vehicle',
+        },
+        {
+          src: 'images/xpiry/notifications-promo.webp',
+          alt: 'Android notification listing products that expire today, in 1 day, in 3 days and in 1 month',
+        },
+      ],
+    },
     kicker: 'Personal product · Founder & Developer',
     title: 'Xpiry',
     summary:

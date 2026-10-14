@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import ProjectVisual from './ProjectVisual.astro';
+import Showcase from './Showcase.astro';
 import { projects, libraries } from '../data/portfolio';
 ---
 
@@ -18,7 +19,11 @@ import { projects, libraries } from '../data/portfolio';
         projects.map((project, index) => (
           <article class:list={['project', { flip: index % 2 === 1 }]} id={project.id} aria-labelledby={`${project.id}-title`}>
             <div class="project-visual" data-reveal>
-              <ProjectVisual variant={project.visual} />
+              {typeof project.visual === 'string' ? (
+                <ProjectVisual variant={project.visual} />
+              ) : (
+                <Showcase screenshots={project.visual.screenshots} />
+              )}
             </div>
 
             <div class="project-body">

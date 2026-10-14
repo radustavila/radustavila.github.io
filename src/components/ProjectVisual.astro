@@ -5,17 +5,10 @@
  * Replace a variant with an <img> if you later add real screenshots.
  */
 interface Props {
-  variant: 'migration' | 'expiry' | 'ble';
+  variant: 'migration' | 'ble';
 }
 
 const { variant } = Astro.props;
-
-const expiryItems = [
-  { name: 'Milk', left: '2 days', level: 0.12, tone: 'hot' },
-  { name: 'Yogurt', left: '5 days', level: 0.3, tone: 'warm' },
-  { name: 'Eggs', left: '12 days', level: 0.55, tone: 'ok' },
-  { name: 'Olive oil', left: '4 months', level: 0.9, tone: 'ok' },
-];
 
 const bleBars = [0.25, 0.4, 0.3, 0.62, 0.85, 0.7, 0.95, 0.6, 0.42, 0.5, 0.28, 0.18];
 ---
@@ -43,29 +36,6 @@ const bleBars = [0.25, 0.4, 0.3, 0.62, 0.85, 0.7, 0.95, 0.6, 0.42, 0.5, 0.28, 0.
           <span class="layer">MVVM / MVI</span>
           <span class="layer">Coroutines</span>
         </div>
-      </div>
-    )
-  }
-
-  {
-    variant === 'expiry' && (
-      <div class="phone">
-        <div class="phone-top">
-          <span>Expiring soon</span>
-          <i />
-        </div>
-        <ul class="rows">
-          {expiryItems.map((item) => (
-            <li class={`row row--${item.tone}`}>
-              <span class="row-name">{item.name}</span>
-              <span class="row-left">{item.left}</span>
-              <span class="row-bar">
-                <i style={`width: ${item.level * 100}%`} />
-              </span>
-            </li>
-          ))}
-        </ul>
-        <span class="fab">+</span>
       </div>
     )
   }
@@ -221,67 +191,6 @@ const bleBars = [0.25, 0.4, 0.3, 0.62, 0.85, 0.7, 0.95, 0.6, 0.42, 0.5, 0.28, 0.
     height: 1.4rem;
     border-radius: 50%;
     background: var(--dark-line);
-  }
-
-  .rows {
-    display: grid;
-    gap: 0.5rem;
-  }
-
-  .row {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 0.45rem 0.5rem;
-    padding: 0.65rem 0.7rem;
-    border-radius: 11px;
-    background: var(--dark-2);
-    font-family: var(--font-body);
-    font-size: 0.8rem;
-    --tone: var(--android);
-  }
-
-  .row--hot {
-    --tone: #ff7a66;
-  }
-
-  .row--warm {
-    --tone: #f2c14e;
-  }
-
-  .row-left {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    color: var(--tone);
-  }
-
-  .row-bar {
-    grid-column: 1 / -1;
-    height: 4px;
-    border-radius: 4px;
-    background: var(--dark-line);
-  }
-
-  .row-bar i {
-    display: block;
-    height: 100%;
-    border-radius: inherit;
-    background: var(--tone);
-  }
-
-  .fab {
-    position: absolute;
-    right: 0.9rem;
-    bottom: 0.9rem;
-    display: grid;
-    place-items: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: 12px;
-    background: var(--android);
-    color: var(--dark);
-    font-family: var(--font-body);
-    font-size: 1.3rem;
-    line-height: 1;
   }
 
   /* BLE diagram */

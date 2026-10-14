@@ -1,0 +1,446 @@
+---
+/**
+ * Screenshot carousel, ported from the Xpiry website (xpiry.net).
+ * Desktop: a deck of stacked cards that expands toward the right.
+ * Narrower layouts: a horizontally swipeable, snapping strip.
+ */
+import type { Screenshot } from '../data/portfolio';
+
+interface Props {
+  screenshots: Screenshot[];
+}
+
+const { screenshots } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+
+<div class="frame">
+  <div class="showcase" data-showcase>
+    <ul class="showcase-track" data-showcase-track>
+      {
+        screenshots.map((shot) => (
+          <li class="showcase-slide">
+            <img src={`${base}${shot.src}`} width="640" height="1138" alt={shot.alt} loading="lazy" decoding="async" />
+          </li>
+        ))
+      }
+    </ul>
+
+    <button type="button" class="showcase-arrow showcase-arrow--prev" data-showcase-prev aria-label="Previous screenshot">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+    </button>
+    <button type="button" class="showcase-arrow showcase-arrow--next" data-showcase-next aria-label="Next screenshot">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6" /></svg>
+    </button>
+
+    <div class="showcase-dots" data-showcase-dots role="tablist" aria-label="Screenshot navigation"></div>
+  </div>
+</div>
+
+<style>
+  .frame {
+    --shadow-md: 0 2px 4px rgb(0 0 0 / 0.3), 0 8px 24px -8px rgb(0 0 0 / 0.5);
+    --shadow-lg: 0 24px 60px -20px rgb(0 0 0 / 0.7), 0 8px 24px -12px rgb(0 0 0 / 0.5);
+
+    padding: clamp(1.5rem, 4vw, 2.75rem) clamp(1rem, 3vw, 2.25rem);
+    border: 1px solid var(--dark-line);
+    border-radius: calc(var(--radius) + 6px);
+    background:
+      radial-gradient(circle, rgb(255 255 255 / 0.05) 1px, transparent 1.2px) 0 0 / 20px 20px,
+      var(--dark-2);
+    overflow: hidden;
+  }
+
+  .showcase {
+    position: relative;
+    width: min(320px, 100%);
+    margin-inline: auto;
+  }
+
+  .showcase-track {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+  }
+
+  .showcase-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .showcase-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+  }
+
+  .showcase-slide img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 640 / 1138;
+    object-fit: cover;
+    border-radius: 28px;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .showcase-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--dark-line);
+    border-radius: 999px;
+    background: var(--dark);
+    color: var(--on-dark);
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    z-index: 4;
+    transition:
+      background-color 0.2s var(--ease),
+      color 0.2s var(--ease);
+  }
+
+  .showcase-arrow:hover {
+    background: var(--dark-2);
+    color: var(--android);
+  }
+
+  .showcase-arrow--prev {
+    left: -14px;
+  }
+
+  .showcase-arrow--next {
+    right: -14px;
+  }
+
+  @media (max-width: 480px) {
+    .showcase-arrow--prev {
+      left: 4px;
+    }
+
+    .showcase-arrow--next {
+      right: 4px;
+    }
+  }
+
+  /* Desktop: stacked cards, deck expands toward the right */
+  @media (min-width: 901px) {
+    .showcase {
+      width: min(400px, 100%);
+      padding: 44px 84px 0 0;
+      overflow: visible;
+    }
+
+    .showcase-track {
+      position: relative;
+      overflow: visible;
+      aspect-ratio: 640 / 1138;
+    }
+
+    .showcase-slide {
+      position: absolute;
+      inset: 0;
+      flex: none;
+      transition:
+        transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+        opacity 0.5s ease;
+    }
+
+    /* No-JS fallback: first three slides stack in document order */
+    .showcase-slide:nth-child(1) {
+      transform: none;
+      z-index: 3;
+      opacity: 1;
+    }
+
+    .showcase-slide:nth-child(2) {
+      transform: translate(34px, -28px) scale(0.94);
+      z-index: 2;
+      opacity: 1;
+    }
+
+    .showcase-slide:nth-child(3) {
+      transform: translate(64px, -52px) scale(0.88);
+      z-index: 1;
+      opacity: 0.9;
+    }
+
+    .showcase-slide:nth-child(n + 4) {
+      transform: translate(64px, -52px) scale(0.88);
+      z-index: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .showcase-slide[data-depth='0'] {
+      transform: none;
+      z-index: 3;
+      opacity: 1;
+    }
+
+    .showcase-slide[data-depth='1'] {
+      transform: translate(34px, -28px) scale(0.94);
+      z-index: 2;
+      opacity: 1;
+      cursor: pointer;
+    }
+
+    .showcase-slide[data-depth='2'] {
+      transform: translate(64px, -52px) scale(0.88);
+      z-index: 1;
+      opacity: 0.9;
+      cursor: pointer;
+    }
+
+    .showcase-slide[data-depth='hidden'] {
+      transform: translate(64px, -52px) scale(0.88);
+      z-index: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .showcase-slide[data-depth='1'] img,
+    .showcase-slide[data-depth='2'] img {
+      box-shadow: var(--shadow-md);
+    }
+
+    .showcase-arrow--prev {
+      left: -18px;
+    }
+
+    .showcase-arrow--next {
+      right: 66px;
+    }
+
+    .showcase-dots {
+      justify-content: flex-start;
+      margin-top: 22px;
+    }
+  }
+
+  .showcase-dots {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 16px;
+  }
+
+  .showcase-dots :global(button) {
+    width: 7px;
+    height: 7px;
+    padding: 0;
+    border: none;
+    border-radius: 999px;
+    background: var(--dark-line);
+    cursor: pointer;
+    transition:
+      width 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .showcase-dots :global(button[aria-selected='true']) {
+    background: var(--android);
+    width: 20px;
+  }
+
+  @media (max-width: 480px) {
+    .showcase {
+      width: min(268px, 100%);
+    }
+
+    .showcase-slide img {
+      border-radius: 22px;
+    }
+
+    .showcase-dots {
+      margin-top: 12px;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-showcase]').forEach((showcase) => {
+    const track = showcase.querySelector<HTMLElement>('[data-showcase-track]');
+    const dotsWrap = showcase.querySelector<HTMLElement>('[data-showcase-dots]');
+    if (!track || !dotsWrap) return;
+
+    const slides = Array.from(track.children) as HTMLElement[];
+    const prevBtn = showcase.querySelector<HTMLButtonElement>('[data-showcase-prev]');
+    const nextBtn = showcase.querySelector<HTMLButtonElement>('[data-showcase-next]');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Matches the two-column project layout in Projects.astro.
+    const desktopMQ = window.matchMedia('(min-width: 901px)');
+    const AUTOPLAY_DELAY = 2000;
+    const RESUME_DELAY = 15000;
+    let current = 0;
+    let autoplayTimer: ReturnType<typeof setTimeout> | undefined;
+    let scrollSyncTimer: ReturnType<typeof setTimeout> | undefined;
+    let snapReleaseTimer: ReturnType<typeof setTimeout> | undefined;
+    let resizeTimer: ReturnType<typeof setTimeout> | undefined;
+    let programmatic = false;
+
+    const isStack = () => desktopMQ.matches;
+
+    /* Move the mobile strip to `current`.
+       WebKit — iOS Safari, and iOS Chrome, which is WebKit too — will not run a
+       programmatic scroll across a `scroll-snap-type: mandatory` container: it
+       halts at the first snap point, so wrapping from the last slide back to the
+       first never arrives. Turn snapping off for the length of our own scroll and
+       hand it back once we have landed (we always land exactly on a snap point,
+       so restoring it moves nothing). */
+    const scrollToSlide = (instant: boolean) => {
+      const left = current * track.clientWidth;
+      let smooth = !instant && !reduceMotion;
+
+      clearTimeout(snapReleaseTimer);
+      programmatic = true;
+      track.style.scrollSnapType = 'none';
+
+      if (smooth) {
+        try {
+          track.scrollTo({ left, behavior: 'smooth' });
+        } catch {
+          track.scrollLeft = left;
+          smooth = false;
+        }
+      } else {
+        /* `behavior: 'auto'` is not "jump" — it defers to the track's CSS
+           `scroll-behavior: smooth`, so an unanimated move has to suppress that
+           property for the assignment. */
+        const prevBehavior = track.style.scrollBehavior;
+        track.style.scrollBehavior = 'auto';
+        track.scrollLeft = left;
+        track.style.scrollBehavior = prevBehavior;
+      }
+
+      if (smooth) snapReleaseTimer = setTimeout(releaseSnap, 700);
+      else releaseSnap();
+    };
+
+    const releaseSnap = () => {
+      clearTimeout(snapReleaseTimer);
+      snapReleaseTimer = undefined;
+      track.style.scrollSnapType = '';
+      programmatic = false;
+    };
+
+    const updateDots = () => {
+      dots.forEach((dot, i) => dot.setAttribute('aria-selected', String(i === current)));
+    };
+
+    const render = (instant = false) => {
+      if (isStack()) {
+        slides.forEach((slide, i) => {
+          const offset = (i - current + slides.length) % slides.length;
+          slide.dataset.depth = offset <= 2 ? String(offset) : 'hidden';
+        });
+      } else {
+        slides.forEach((slide) => slide.removeAttribute('data-depth'));
+        scrollToSlide(instant);
+      }
+      updateDots();
+    };
+
+    const goTo = (i: number) => {
+      current = ((i % slides.length) + slides.length) % slides.length;
+      render();
+    };
+
+    const clearAutoplay = () => {
+      clearTimeout(autoplayTimer);
+      autoplayTimer = undefined;
+    };
+
+    const scheduleAutoplay = (delay: number) => {
+      clearAutoplay();
+      if (reduceMotion) return;
+      autoplayTimer = setTimeout(() => {
+        goTo(current + 1);
+        scheduleAutoplay(AUTOPLAY_DELAY);
+      }, delay);
+    };
+
+    const markInteraction = () => scheduleAutoplay(RESUME_DELAY);
+
+    const dots = slides.map((_, i) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.setAttribute('role', 'tab');
+      dot.setAttribute('aria-label', `Go to screenshot ${i + 1} of ${slides.length}`);
+      dot.addEventListener('click', () => {
+        goTo(i);
+        markInteraction();
+      });
+      dotsWrap.appendChild(dot);
+      return dot;
+    });
+
+    prevBtn?.addEventListener('click', () => {
+      goTo(current - 1);
+      markInteraction();
+    });
+    nextBtn?.addEventListener('click', () => {
+      goTo(current + 1);
+      markInteraction();
+    });
+
+    /* Clicking a peeking (stacked) card on desktop brings it to the front */
+    track.addEventListener('click', (e) => {
+      if (!isStack()) return;
+      const slide = (e.target as Element).closest<HTMLElement>('.showcase-slide');
+      if (!slide) return;
+      const idx = slides.indexOf(slide);
+      if (idx !== current) {
+        goTo(idx);
+        markInteraction();
+      }
+    });
+
+    /* A user grabbing the strip to swipe/drag counts as interaction, and hands
+       snapping straight back so the swipe itself still snaps */
+    track.addEventListener(
+      'pointerdown',
+      () => {
+        if (programmatic) releaseSnap();
+        markInteraction();
+      },
+      { passive: true },
+    );
+
+    /* Keep `current` in sync with native swipe scrolling (mobile) without forcing a scroll ourselves */
+    track.addEventListener(
+      'scroll',
+      () => {
+        if (isStack() || programmatic) return;
+        clearTimeout(scrollSyncTimer);
+        scrollSyncTimer = setTimeout(() => {
+          const idx = Math.round(track.scrollLeft / track.clientWidth);
+          if (idx !== current) {
+            current = idx;
+            updateDots();
+          }
+        }, 100);
+      },
+      { passive: true },
+    );
+
+    /* Re-sync layout when crossing the desktop/mobile breakpoint */
+    desktopMQ.addEventListener('change', () => render(true));
+
+    window.addEventListener('resize', () => {
+      if (isStack()) return;
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => render(true), 120);
+    });
+
+    render(true);
+    scheduleAutoplay(AUTOPLAY_DELAY);
+  });
+</script>
