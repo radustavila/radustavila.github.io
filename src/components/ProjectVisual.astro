@@ -1,8 +1,7 @@
 ---
 /**
- * Decorative, code-drawn illustrations for the featured projects.
- * They are diagrams and sketches, not screenshots of the real apps.
- * Replace a variant with an <img> if you later add real screenshots.
+ * Code-drawn illustrations for the featured projects.
+ * The BLE variant frames a real app screenshot inside the drawn phone.
  */
 interface Props {
   variant: 'migration' | 'ble';
@@ -10,10 +9,10 @@ interface Props {
 
 const { variant } = Astro.props;
 
-const bleBars = [0.25, 0.4, 0.3, 0.62, 0.85, 0.7, 0.95, 0.6, 0.42, 0.5, 0.28, 0.18];
+const base = import.meta.env.BASE_URL;
 ---
 
-<figure class={`visual visual--${variant}`} aria-hidden="true">
+<figure class={`visual visual--${variant}`} aria-hidden={variant === 'migration' ? 'true' : undefined}>
   {
     variant === 'migration' && (
       <div class="migration">
@@ -43,37 +42,32 @@ const bleBars = [0.25, 0.4, 0.3, 0.62, 0.85, 0.7, 0.95, 0.6, 0.42, 0.5, 0.28, 0.
   {
     variant === 'ble' && (
       <div class="ble">
-        <div class="chip-board">
+        <div class="chip-board" aria-hidden="true">
           <span class="pins" />
           <span class="chip-name">ESP32</span>
           <span class="chip-sub">touch sensor</span>
           <span class="pins" />
         </div>
-        <div class="waves">
+        <div class="waves" aria-hidden="true">
           <i />
           <i />
           <i />
           <span>BLE · GATT</span>
         </div>
-        <div class="phone phone--small">
-          <div class="phone-top">
-            <span>Intensity</span>
-            <i />
-          </div>
-          <div class="bars">
-            {bleBars.map((h, i) => (
-              <i style={`--h: ${h}; --i: ${i}`} />
-            ))}
-          </div>
-          <div class="readout">
-            <span>live</span>
-            <span>session</span>
-          </div>
+        <div class="phone phone--small phone--shot">
+          <img
+            src={`${base}images/myblesense/hardware-events.webp`}
+            width="600"
+            height="1300"
+            alt="MyBLESense app connected to an ESP32 board, showing live touch events with intensity, duration, peak and average values"
+            loading="lazy"
+            decoding="async"
+          />
         </div>
       </div>
     )
   }
-  <figcaption>{variant === 'migration' ? 'Architecture migration' : 'Illustration, not a screenshot'}</figcaption>
+  <figcaption>{variant === 'migration' ? 'Architecture migration' : 'ESP32 · app screenshot'}</figcaption>
 </figure>
 
 <style>
@@ -176,23 +170,6 @@ const bleBars = [0.25, 0.4, 0.3, 0.62, 0.85, 0.7, 0.95, 0.6, 0.42, 0.5, 0.28, 0.
       0 24px 50px -20px rgb(0 0 0 / 0.7);
   }
 
-  .phone-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.9rem;
-    font-family: var(--font-body);
-    font-size: 0.95rem;
-    font-weight: 550;
-  }
-
-  .phone-top i {
-    width: 1.4rem;
-    height: 1.4rem;
-    border-radius: 50%;
-    background: var(--dark-line);
-  }
-
   /* BLE diagram */
   .ble {
     display: grid;
@@ -276,46 +253,15 @@ const bleBars = [0.25, 0.4, 0.3, 0.62, 0.85, 0.7, 0.95, 0.6, 0.42, 0.5, 0.28, 0.
     border-radius: 22px;
   }
 
-  .phone--small .phone-top {
-    font-size: 0.8rem;
+  .phone--shot {
+    padding: 0.35rem;
   }
 
-  .phone--small .phone-top i {
-    width: 0.6rem;
-    height: 0.6rem;
-    background: var(--android);
-    animation: pulse 1.6s ease-in-out infinite;
-  }
-
-  .bars {
-    display: flex;
-    align-items: flex-end;
-    gap: 3px;
-    height: 6rem;
-    padding: 0.5rem;
-    border-radius: 10px;
-    background: var(--dark-2);
-  }
-
-  .bars i {
-    flex: 1;
-    height: calc(var(--h) * 100%);
-    border-radius: 2px;
-    background: var(--android);
-    opacity: calc(0.35 + var(--h) * 0.65);
-    transform-origin: bottom;
-    animation: sense 2.8s ease-in-out infinite;
-    animation-delay: calc(var(--i) * -0.23s);
-  }
-
-  .readout {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 0.6rem;
-    font-size: 0.56rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--on-dark-muted);
+  .phone--shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 17px;
   }
 
   @keyframes pulse {
@@ -325,16 +271,6 @@ const bleBars = [0.25, 0.4, 0.3, 0.62, 0.85, 0.7, 0.95, 0.6, 0.42, 0.5, 0.28, 0.
     }
     50% {
       opacity: 1;
-    }
-  }
-
-  @keyframes sense {
-    0%,
-    100% {
-      transform: scaleY(1);
-    }
-    50% {
-      transform: scaleY(0.6);
     }
   }
 
@@ -357,7 +293,6 @@ const bleBars = [0.25, 0.4, 0.3, 0.62, 0.85, 0.7, 0.95, 0.6, 0.42, 0.5, 0.28, 0.
 
     .phone--small {
       width: 7.75rem;
-      padding: 0.75rem 0.6rem;
     }
 
     .chip-board {
