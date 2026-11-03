@@ -29,6 +29,7 @@ export const links = {
   ghinPlay: 'https://play.google.com/store/apps/details?id=com.advancedmobile.android.ghin&hl=en&gl=US',
   xpirySite: 'https://xpiry.net/',
   xpiryPlay: 'https://play.google.com/store/apps/details?id=com.radustavila.xpiry',
+  spaceterraPlay: 'https://play.google.com/store/apps/details?id=com.radustavila.spaceterra',
   expandableCardRepo: 'https://github.com/radustavila/Expandable-Card-With-Image-Android-Library',
   numberPickerRepo: 'https://github.com/radustavila/NumberPicker-Customizable-Card-Android-Library',
 };
@@ -205,6 +206,75 @@ export const projects: Project[] = [
       { label: 'xpiry.net', href: links.xpirySite },
       { label: 'View on Google Play', href: links.xpiryPlay },
     ],
+  },
+  {
+    id: 'spaceterra',
+    visual: {
+      screenshots: [
+        {
+          src: 'images/spaceterra/sky-map.webp',
+          alt: 'Sky map with constellations, planets and the horizon, with AR and red night mode controls',
+        },
+        {
+          src: 'images/spaceterra/sky-tonight.webp',
+          alt: 'Sky tonight screen with a stargazing forecast score, dark-sky times and the Moon phase',
+        },
+        {
+          src: 'images/spaceterra/iss.webp',
+          alt: 'ISS tracker showing the station’s live position on a world map and its upcoming visible passes',
+        },
+        {
+          src: 'images/spaceterra/earth-today.webp',
+          alt: 'Earth today screen with a whole-Earth photo from NASA’s EPIC camera and links to live Earth features',
+        },
+        {
+          src: 'images/spaceterra/earth-events.webp',
+          alt: 'Live Earth events map with wildfires, sea and lake ice, storms and earthquakes',
+        },
+        {
+          src: 'images/spaceterra/moon-map.webp',
+          alt: 'Moon map with landing sites, showing the details of the Apollo 15 landing',
+        },
+        {
+          src: 'images/spaceterra/space-weather.webp',
+          alt: 'Aurora and space weather screen with the aurora forecast map, the Kp index gauge and a 3-day forecast',
+        },
+        {
+          src: 'images/spaceterra/daily-quiz.webp',
+          alt: 'Daily space quiz question with four answer options',
+        },
+      ],
+    },
+    kicker: 'Personal product · Founder & Developer',
+    title: 'SpaceTerra',
+    summary:
+      'A consumer Android app for exploring the universe and Earth through NASA and other public science data. Built and launched with AI coding agents.',
+    role: 'Product and architecture owner: roadmap, scope, architecture decisions and Google Play releases, while AI coding agents implement, test and ship each change.',
+    facts: [
+      { value: '27', label: 'features' },
+      { value: '< 3 weeks', label: 'of focused development to Google Play' },
+      { value: 'AI', label: 'coding agents for implementation' },
+    ],
+    story: [
+      {
+        heading: 'What I did',
+        points: [
+          'Set the roadmap, scope and release decisions, running several AI agent sessions in parallel, each in its own git worktree.',
+          'Integrated public APIs from NASA, NOAA, USGS, JPL and Launch Library 2, with launch reminders and aurora and earthquake alerts.',
+          'Launched it on Google Play with Firebase Analytics, AdMob, In-App Reviews and In-App Updates.',
+        ],
+      },
+      {
+        heading: 'How it’s built',
+        points: [
+          'A multi-module Clean Architecture with convention plugins and a pure Kotlin domain layer.',
+          'Offline-first: Room is the single source of truth and WorkManager keeps the data in sync in the background.',
+          'Every change passes a local quality gate before merge: unit, Robolectric and screenshot tests, Android Lint and Detekt.',
+        ],
+      },
+    ],
+    stack: ['Kotlin', 'Jetpack Compose', 'Clean Architecture', 'Hilt', 'Room', 'WorkManager', 'Retrofit', 'AI coding agents'],
+    links: [{ label: 'View on Google Play', href: links.spaceterraPlay }],
   },
   {
     id: 'myblesense',
