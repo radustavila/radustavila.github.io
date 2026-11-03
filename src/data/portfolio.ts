@@ -52,7 +52,7 @@ export const ledger = [
 export const stats: { value: string; label: string; href?: string }[] = [
   { value: '6+', label: 'years building production Android apps', href: '#experience' },
   { value: '1M+', label: 'downloads of the GHIN app I lead on Android', href: '#ghin' },
-  { value: '30k+', label: 'downloads of Xpiry, my own product, rated 4.7+', href: '#xpiry' },
+  { value: '30k+', label: 'downloads of Xpiry, my own product, rated 4.8+', href: '#xpiry' },
   { value: '3', label: 'Android engineers mentored and coordinated at peak', href: '#experience' },
 ];
 
@@ -180,7 +180,7 @@ export const projects: Project[] = [
     role: 'Everything: niche research, architecture, UI/UX, development, analytics, monetization and Google Play operations.',
     facts: [
       { value: '30k+', label: 'Google Play downloads' },
-      { value: '4.7+', label: 'store rating' },
+      { value: '4.8+', label: 'store rating' },
       { value: 'Solo', label: 'from idea to release' },
     ],
     story: [
