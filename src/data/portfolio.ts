@@ -29,6 +29,7 @@ export const links = {
   ghinPlay: 'https://play.google.com/store/apps/details?id=com.advancedmobile.android.ghin&hl=en&gl=US',
   xpirySite: 'https://xpiry.net/',
   xpiryPlay: 'https://play.google.com/store/apps/details?id=com.radustavila.xpiry',
+  spaceterraSite: 'https://radustavila.github.io/SpaceTerra-Web/',
   spaceterraPlay: 'https://play.google.com/store/apps/details?id=com.radustavila.spaceterra',
   expandableCardRepo: 'https://github.com/radustavila/Expandable-Card-With-Image-Android-Library',
   numberPickerRepo: 'https://github.com/radustavila/NumberPicker-Customizable-Card-Android-Library',
@@ -274,7 +275,10 @@ export const projects: Project[] = [
       },
     ],
     stack: ['Kotlin', 'Jetpack Compose', 'Clean Architecture', 'Hilt', 'Room', 'WorkManager', 'Retrofit', 'AI coding agents'],
-    links: [{ label: 'View on Google Play', href: links.spaceterraPlay }],
+    links: [
+      { label: 'SpaceTerra website', href: links.spaceterraSite },
+      { label: 'View on Google Play', href: links.spaceterraPlay },
+    ],
   },
   {
     id: 'myblesense',
