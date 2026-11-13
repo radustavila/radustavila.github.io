@@ -28,9 +28,7 @@ export const links = {
   resume: 'https://www.linkedin.com/in/radu-stavila/',
   ghinPlay: 'https://play.google.com/store/apps/details?id=com.advancedmobile.android.ghin&hl=en&gl=US',
   xpirySite: 'https://xpiry.net/',
-  xpiryPlay: 'https://play.google.com/store/apps/details?id=com.radustavila.xpiry',
   spaceterraSite: 'https://radustavila.github.io/SpaceTerra-Web/',
-  spaceterraPlay: 'https://play.google.com/store/apps/details?id=com.radustavila.spaceterra',
   expandableCardRepo: 'https://github.com/radustavila/Expandable-Card-With-Image-Android-Library',
   numberPickerRepo: 'https://github.com/radustavila/NumberPicker-Customizable-Card-Android-Library',
 };
@@ -177,7 +175,7 @@ export const projects: Project[] = [
     kicker: 'Personal product · Founder & Developer',
     title: 'Xpiry',
     summary:
-      'A consumer Android app for tracking product expiration dates. Built, launched and grown independently.',
+      'A consumer Android app for tracking product expiration dates, now on iOS as well. Built, launched and grown independently.',
     role: 'Everything: niche research, architecture, UI/UX, development, analytics, monetization and Google Play operations.',
     facts: [
       { value: '30k+', label: 'Google Play downloads' },
@@ -204,8 +202,7 @@ export const projects: Project[] = [
     ],
     stack: ['Kotlin', 'MVVM', 'Play Billing', 'AdMob', 'In-App Reviews', 'In-App Updates', 'Firebase Analytics'],
     links: [
-      { label: 'xpiry.net', href: links.xpirySite },
-      { label: 'View on Google Play', href: links.xpiryPlay },
+      { label: 'Check Xpiry', href: links.xpirySite },
     ],
   },
   {
@@ -276,8 +273,7 @@ export const projects: Project[] = [
     ],
     stack: ['Kotlin', 'Jetpack Compose', 'Clean Architecture', 'Hilt', 'Room', 'WorkManager', 'Retrofit', 'AI coding agents'],
     links: [
-      { label: 'SpaceTerra website', href: links.spaceterraSite },
-      { label: 'View on Google Play', href: links.spaceterraPlay },
+      { label: 'Check SpaceTerra', href: links.spaceterraSite },
     ],
   },
   {
